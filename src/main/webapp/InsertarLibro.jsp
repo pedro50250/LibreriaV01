@@ -6,6 +6,7 @@
 <%@ page import="java.sql.SQLException"%>
 <%@ page import="JavaEEJDBC.*"%>
 <%
+	System.out.println("Si entro ");
 	String StrISBN = request.getParameter("ISBN"); 
 	String StrTitulo = request.getParameter("Titulo"); 
 	int Cat = Integer.parseInt(request.getParameter("Categoria"));
@@ -14,6 +15,6 @@
 	consultaSQL += "('" + StrISBN+"','" + StrTitulo +"'," + Cat + "," + Pre +")";
 	DataBaseHelper dbh = new DataBaseHelper();
 	int filas = dbh.modificarRegistro(consultaSQL);
-	dbh.cerrarObjetos();
 	System.out.println("Filas modificadas "+filas);
+	response.sendRedirect("MostrarLibro.jsp");
 %>

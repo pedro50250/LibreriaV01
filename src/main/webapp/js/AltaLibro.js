@@ -15,8 +15,8 @@ function validaDatos()
 	else
 	{
 		alert("Datos enviados");
-		document.forms[0].action = "InsertarLibro.jsp?ISBN="+n1+"&Titulo"+n2+"&Categoria"+n3+"&Precio"+n4;
-		document.forms[0].action = "post";
+		document.forms[0].action = "InsertarLibro.jsp?ISBN="+n1+"&Titulo="+n2+"&Categoria="+n3+"&Precio="+n4;
+		document.forms[0].method = "post";
 		document.forms[0].submit();
 	}
 }
