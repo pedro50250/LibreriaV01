@@ -2,6 +2,7 @@ package JavaEEJDBC;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -68,5 +69,28 @@ public class DataBaseHelper {
 
 		return filas;
 	}
+	
+	public int actualizarRegistro(Libro lib)
+	{
+		String SQL = "UPDATE libros SET isbn_lib = ?, tit_lib =?, cat_lib=?, pre_lib=? "
+				+ "WHERE num_lib=?";
+		int filas= -1;
+		try {
+			PreparedStatement ps = con.prepareStatement(SQL);
+			ps.setString(1, lib.getISBN());
+			ps.setString(2, lib.getTitulo());
+			ps.setInt(3, lib.getCategoria());
+			ps.setFloat(4, lib.getPrecio());
+			ps.setInt(5, lib.getNumLib());
+			filas = ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return filas;
+		
+	}
+	
+	
 	
 }
