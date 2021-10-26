@@ -1,83 +1,64 @@
 package JavaEEJDBC;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 public class Categoria {
 
-	private int idCategoria;
-	private String nomCategoria;
+	private int id_cat;
+	private String nom_cat;
 	
 	public Categoria() {
 		
 	}
 
-	public Categoria(int idCategoria, String nomCategoria) {
-		this.idCategoria = idCategoria;
-		this.nomCategoria = nomCategoria;
+	public Categoria(int id_cat, String nom_cat) {
+		this.id_cat = id_cat;
+		this.nom_cat = nom_cat;
 	}
 
-	public int getIdCategoria() {
-		return idCategoria;
+	public void setid_cat(int id_cat) {
+		this.id_cat = id_cat;
 	}
 
-	public String getNomCategoria() {
-		return nomCategoria;
+	public int getid_cat() {
+		return id_cat;
 	}
 
-	public void setNomCategoria(String nomCategoria) {
-		this.nomCategoria = nomCategoria;
+	public String getnom_cat() {
+		return nom_cat;
+	}
+
+	public void setnom_cat(String nom_cat) {
+		this.nom_cat = nom_cat;
 	}
 	
-	public ArrayList<Integer> buscarLasCategorias() {
+	/*@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Integer> buscarLasCategorias() {
 		String consultaSQL = "SELECT DISTINCT(cat_lib) FROM libros";
 		DataBaseHelper dbh = new DataBaseHelper();
-		ResultSet rs = dbh.seleccionarRegistros(consultaSQL);
-		ArrayList<Integer> listaCategorias = new ArrayList<Integer>();
-		try {
-			while(rs.next())
-			{
-				listaCategorias.add(rs.getInt("cat_lib"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		List<Integer> listaCategorias= dbh.seleccionarRegistros(consultaSQL, Categoria.class);
+		dbh.cerrarObjetos();
 		return listaCategorias;
-	}
+	}*/
 	
-	public ArrayList<Categoria> getCategorias()
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Categoria> getCategorias()
 	{
 		String consultaSQL = "SELECT * FROM categoria";
 		DataBaseHelper dbh = new DataBaseHelper();
-		ResultSet rs = dbh.seleccionarRegistros(consultaSQL);
-		ArrayList<Categoria> listaCategorias = new ArrayList<Categoria>();
-		try {
-			while(rs.next())
-			{
-				listaCategorias.add(new Categoria(rs.getInt("id_cat"), rs.getString("nom_cat")));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		List<Categoria> listaCategorias =  dbh.seleccionarRegistros(consultaSQL, Categoria.class);
+		dbh.cerrarObjetos();
 		return listaCategorias;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String getNombreCategoriaById(int idCat)
 	{
-		String consultaSQL = "SELECT nom_cat FROM categoria WHERE id_cat="+idCat;
+		String consultaSQL = "SELECT * FROM categoria WHERE id_cat="+idCat;
 		DataBaseHelper dbh = new DataBaseHelper();
-		ResultSet rs = dbh.seleccionarRegistros(consultaSQL);
-		String nombreCategoria ="";
-		try {
-			while(rs.next())
-			{
-				nombreCategoria = rs.getString("nom_cat");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return nombreCategoria;
+		List<Categoria> listaCategorias = dbh.seleccionarRegistros(consultaSQL, Categoria.class);
+		dbh.cerrarObjetos();
+		return listaCategorias.get(0).getnom_cat();
 	}
 	
 	

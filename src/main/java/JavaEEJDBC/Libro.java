@@ -1,138 +1,124 @@
 package JavaEEJDBC;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 public class Libro {
 
-	private int NumLib;
-	private String ISBN;
-	private String Titulo;
-	private int Categoria;
-	private float Precio;
+	private int num_lib;
+	private String isbn_lib;
+	private String tit_lib;
+	private int cat_lib;
+	private float pre_lib;
 
 	public Libro() {
 
 	}
 
-	public Libro(String iSBN, String titulo, int categoria, float precio) {
-		ISBN = iSBN;
-		Titulo = titulo;
-		Categoria = categoria;
-		Precio = precio;
+	public Libro(String isbn_lib_lib, String tit_lib, int cat_lib, float pre_lib) {
+		this.isbn_lib = isbn_lib_lib;
+		this.tit_lib = tit_lib;
+		this.cat_lib = cat_lib;
+		this.pre_lib = pre_lib;
 	}
 
-	public String getISBN() {
-		return ISBN;
+	public String getisbn_lib() {
+		return this.isbn_lib;
 	}
 
-	public void setISBN(String iSBN) {
-		ISBN = iSBN;
+	public void setisbn_lib(String isbn_lib) {
+		this.isbn_lib = isbn_lib;
 	}
 
-	public String getTitulo() {
-		return Titulo;
+	public String gettit_lib() {
+		return this.tit_lib;
 	}
 
-	public void setTitulo(String titulo) {
-		Titulo = titulo;
+	public void settit_lib(String tit_lib) {
+		this.tit_lib = tit_lib;
 	}
 
-	public int getCategoria() {
-		return Categoria;
+	public int getcat_lib() {
+		return this.cat_lib;
 	}
 
-	public void setCategoria(int categoria) {
-		Categoria = categoria;
+	public void setcat_lib(int cat_lib) {
+		this.cat_lib = cat_lib;
 	}
 
-	public float getPrecio() {
-		return Precio;
+	public float getpre_lib() {
+		return this.pre_lib;
 	}
 
-	public void setPrecio(float precio) {
-		Precio = precio;
+	public void setpre_lib(float pre_lib) {
+		this.pre_lib = pre_lib;
 	}
 
-	public int getNumLib() {
-		return NumLib;
+	public int getnum_lib() {
+		return num_lib;
 	}
 	
-	/*public ArrayList<Integer> buscarLasCategorias() {
+	public void setnum_lib(int num_lib) {
+		this.num_lib = num_lib;
+	}
+	
+	
+	
+	/*public ArrayList<Integer> buscarLascat_libs() {
 		String consultaSQL = "SELECT DISTINCT(cat_lib) FROM libros";
 		DataBaseHelper dbh = new DataBaseHelper();
 		ResultSet rs = dbh.seleccionarRegistros(consultaSQL);
-		ArrayList<Integer> listaCategorias = new ArrayList<Integer>();
+		ArrayList<Integer> listacat_libs = new ArrayList<Integer>();
 		try {
 			while(rs.next())
 			{
-				listaCategorias.add(rs.getInt("cat_lib"));
+				listacat_libs.add(rs.getInt("cat_lib"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return listaCategorias;
+		return listacat_libs;
 	}*/
 
+	@SuppressWarnings("rawtypes")
 	public int insertar() {
 		String consultaSQL = "INSERT INTO libros(isbn_lib, tit_lib, cat_lib, pre_lib) VALUES";
-		consultaSQL += "('" + ISBN + "','" + Titulo + "'," + Categoria + "," + Precio + ")";
+		consultaSQL += "('" + isbn_lib + "','" + tit_lib + "'," + cat_lib + "," + pre_lib + ")";
 		DataBaseHelper dbh = new DataBaseHelper();
 		int filas = dbh.modificarRegistro(consultaSQL);
 		dbh.cerrarObjetos();
 		return filas;
 	}
 
-	public ArrayList<Libro> consultarLibros() {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Libro> consultarLibros() {
 		String SQL = "SELECT * FROM libros";
 		DataBaseHelper dbh = new DataBaseHelper();
-		ResultSet rs = dbh.seleccionarRegistros(SQL);
-		ArrayList<Libro> ListaDeLibros = new ArrayList<Libro>();
-		try {
-			while(rs.next())
-			{
-				Libro lib = new Libro(rs.getString("isbn_lib"), rs.getString("tit_lib"), rs.getInt("cat_lib"),
-						rs.getFloat("pre_lib"));
-				lib.NumLib = rs.getInt("num_lib");
-				ListaDeLibros.add(lib);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		List<Libro> ListaDeLibros = dbh.seleccionarRegistros(SQL, Libro.class);
 		dbh.cerrarObjetos();
 		return ListaDeLibros;
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Libro consultaLibroPorId(int id)
 	{
 		String SQL = "SELECT * FROM libros WHERE num_lib=" + id + "";
 		DataBaseHelper dbh = new DataBaseHelper();
-		ResultSet rs = dbh.seleccionarRegistros(SQL);
-		Libro lib = null;
-		try {
-			while(rs.next())
-			{
-				lib = new Libro(rs.getString("isbn_lib"), rs.getString("tit_lib"), rs.getInt("cat_lib"),
-						rs.getFloat("pre_lib"));
-				lib.NumLib = rs.getInt("num_lib");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		List<Libro> ListaDeLibros= dbh.seleccionarRegistros(SQL, Libro.class);
 		dbh.cerrarObjetos();
-		return lib;
+		return ListaDeLibros.get(0);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public int actualizarLibro(int id)
 	{
-		this.NumLib = id;
+		this.num_lib = id;
 		DataBaseHelper dbh = new DataBaseHelper();
 		int filas = dbh.actualizarRegistro(this);
 		dbh.cerrarObjetos();
 		return filas;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public void BorrarLibro(int id)
 	{
 		String consultaSQL = "DELETE FROM libros WHERE num_lib =" +id + ";";
@@ -141,23 +127,12 @@ public class Libro {
 		System.out.println(filas);
 	}
 	
-	public ArrayList<Libro> buscarPorCategoria(int Cat)
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public List<Libro> buscarPorCategoria(int Cat)
 	{
 		String SQL = "SELECT * FROM libros WHERE cat_lib ="+ Cat;
 		DataBaseHelper dbh = new DataBaseHelper();
-		ResultSet rs = dbh.seleccionarRegistros(SQL);
-		ArrayList<Libro> ListaDeLibros = new ArrayList<Libro>();
-		try {
-			while(rs.next())
-			{
-				Libro lib = new Libro(rs.getString("isbn_lib"), rs.getString("tit_lib"), rs.getInt("cat_lib"),
-						rs.getFloat("pre_lib"));
-				lib.NumLib = rs.getInt("num_lib");
-				ListaDeLibros.add(lib);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		List<Libro> ListaDeLibros = dbh.seleccionarRegistros(SQL, Libro.class);
 		dbh.cerrarObjetos();
 		return ListaDeLibros;
 	}

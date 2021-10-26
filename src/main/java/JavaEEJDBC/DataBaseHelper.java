@@ -1,14 +1,18 @@
 package JavaEEJDBC;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class DataBaseHelper {
+public class DataBaseHelper <T> {
 
 	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 	private static final String URL = "jdbc:mysql://localhost/libreria";
@@ -58,16 +62,44 @@ public class DataBaseHelper {
 		}
 	}
 
-	public ResultSet seleccionarRegistros(String query) {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<T> seleccionarRegistros(String query, Class clase) {
 		ResultSet filas = null;
+		List<T> listaDeObjetos = new ArrayList<T>();
 		try {
 			this.stm = this.con.createStatement();
 			filas = stm.executeQuery(query);
-		} catch (SQLException e) {
+			while(filas.next())
+			{
+				T object = (T) Class.forName(clase.getName()).getDeclaredConstructor().newInstance();
+				Method[] metodos = object.getClass().getDeclaredMethods();
+				for(int i=0; i< metodos.length; i++)
+				{
+					if(metodos[i].getName().startsWith("set"))
+					{
+						if(metodos[i].getName().substring(3).equals("num_lib") || metodos[i].getName().substring(3).equals("cat_lib") ||  metodos[i].getName().substring(3).equals("id_cat"))
+						{
+							metodos[i].invoke(object, filas.getInt(metodos[i].getName().substring(3)));
+						}
+						else if(metodos[i].getName().substring(3).equals("pre_lib"))
+						{
+							metodos[i].invoke(object, filas.getFloat(metodos[i].getName().substring(3)));
+						}
+						else
+						{
+							metodos[i].invoke(object, filas.getString(metodos[i].getName().substring(3)));
+						}
+
+					}
+					
+				}
+				listaDeObjetos.add(object);
+			}
+		} catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 		}
 
-		return filas;
+		return listaDeObjetos;
 	}
 	
 	public int actualizarRegistro(Libro lib)
@@ -77,11 +109,11 @@ public class DataBaseHelper {
 		int filas= -1;
 		try {
 			PreparedStatement ps = con.prepareStatement(SQL);
-			ps.setString(1, lib.getISBN());
-			ps.setString(2, lib.getTitulo());
-			ps.setInt(3, lib.getCategoria());
-			ps.setFloat(4, lib.getPrecio());
-			ps.setInt(5, lib.getNumLib());
+			ps.setString(1, lib.getisbn_lib());
+			ps.setString(2, lib.gettit_lib());
+			ps.setInt(3, lib.getcat_lib());
+			ps.setFloat(4, lib.getpre_lib());
+			ps.setInt(5, lib.getnum_lib());
 			filas = ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {

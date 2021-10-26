@@ -2,7 +2,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <%@ page import="java.sql.ResultSet"%>
 <%@ page import="java.sql.SQLException"%>
-<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.List"%>
 <%@ page import="JavaEEJDBC.*"%>
 <html lang="es">
 <head>
@@ -19,9 +19,9 @@
 		<select name="categoria" class="form-select form-select-lg mb-3">
 			<option value="Seleccionar">Seleccionar</option>
 			<%
-					ArrayList<Categoria> listaCategoria = new  Categoria().getCategorias();
+					List<Categoria> listaCategoria = new  Categoria().getCategorias();
 					for(Categoria c: listaCategoria ) {%>
-						<option value="<%= c.getIdCategoria() %>"> <%= c.getNomCategoria()%> </option>
+						<option value="<%= c.getid_cat() %>"> <%= c.getnom_cat()%> </option>
 					<%}
 			%>
 		</select>
@@ -43,7 +43,7 @@
 			</thead>
 			<tbody>
 				<%
-					ArrayList<Libro> libros = null;
+					List<Libro> libros = null;
 					if(request.getParameter("categoria") == null || request.getParameter("categoria").equals("Seleccionar"))
 					{
 						libros = new Libro().consultarLibros();
@@ -56,15 +56,15 @@
 					for(Libro lib: libros){
 					%>
 				<tr>
-					<th scope="row"><%=lib.getNumLib() %></th>
-					<td><%=lib.getISBN()%></td>
-					<td><%=lib.getTitulo()%></td>
-					<td><%=new Categoria().getNombreCategoriaById(lib.getCategoria()) %></td>
-					<td><%=lib.getPrecio() %></td>
+					<th scope="row"><%=lib.getnum_lib() %></th>
+					<td><%=lib.getisbn_lib()%></td>
+					<td><%=lib.gettit_lib()%></td>
+					<td><%=new Categoria().getNombreCategoriaById(lib.getcat_lib()) %></td>
+					<td><%=lib.getpre_lib() %></td>
 					<td>
-						<a href="FormularioEditarLibro.jsp?ID=<%=lib.getNumLib() %>"><i class="fas fa-edit"></i></a>
+						<a href="FormularioEditarLibro.jsp?ID=<%=lib.getnum_lib() %>"><i class="fas fa-edit"></i></a>
 					</td>	
-					<td> <a href="BorrarLibro.jsp?id=<%=lib.getNumLib() %>"><i class="fas fa-trash-alt"></i></a></td>
+					<td> <a href="BorrarLibro.jsp?id=<%=lib.getnum_lib() %>"><i class="fas fa-trash-alt"></i></a></td>
 				</tr>
 				<%} %>
 			</tbody>
