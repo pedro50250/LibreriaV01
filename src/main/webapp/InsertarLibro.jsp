@@ -6,7 +6,24 @@
 	String StrTitulo = request.getParameter("Titulo"); 
 	int Cat = Integer.parseInt(request.getParameter("Categoria"));
 	float Pre = Float.parseFloat(request.getParameter("Precio")); 
-	int filas = new Libro(StrISBN, StrTitulo, Cat, Pre).insertar();
+	int filas =0;
+	
+	try{
+		filas = new Libro(StrISBN, StrTitulo, Cat, Pre).insertar();
+	}
+	catch(DataBaseException e) 
+	{%>
+		
+	  <%
+	  	out.println(e.getMessage());
+	  	out.println(e.getCause());
+	  	System.out.println(e.getCause());
+	  %>	
+	<%}
 	System.out.println("Filas modificadas "+filas);
-	response.sendRedirect("MostrarLibro.jsp");
+	if(filas!=0)
+	{
+		response.sendRedirect("MostrarLibro.jsp");
+	}
+	
 %>

@@ -4,6 +4,18 @@
 <%
 	int id = Integer.parseInt(request.getParameter("id"));
 	Libro lib = new Libro();
-	lib.BorrarLibro(id);
-	response.sendRedirect("MostrarLibro.jsp");
+	boolean error=false;
+	try{
+		lib.BorrarLibro(id);
+	}
+	catch(DataBaseException e) 
+	{%>
+	  <% out.println(e.getMessage());
+	   error=true;%>	
+	<%}
+	if(!error)
+	{
+		response.sendRedirect("MostrarLibro.jsp");
+	}
+	
 %>

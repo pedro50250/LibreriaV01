@@ -1,5 +1,6 @@
 package JavaEEJDBC;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
@@ -11,6 +12,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 
 public class DataBaseHelper <T> {
 
@@ -18,37 +23,44 @@ public class DataBaseHelper <T> {
 	private static final String URL = "jdbc:mysql://localhost/libreria";
 	private static final String USUARIO = "root";
 	private static final String CLAVE ="";
+	private Logger log =  LogManager.getLogger("DataBaseHelper");
 	
 	Connection con = null;
 	Statement stm = null;
 	int filasAfectadas = 0;
-	public DataBaseHelper()
+	public DataBaseHelper() throws DataBaseException
 	{
 		try {
 			Class.forName(DRIVER);
 			con = DriverManager.getConnection(URL,USUARIO, CLAVE);
-		}
-		catch(ClassNotFoundException | SQLException e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	public int modificarRegistro(String querySQL)
-	{
-		try
-		{
-			stm = con.createStatement();
-			filasAfectadas = stm.executeUpdate(querySQL);
+			log.setLevel(Level.DEBUG);
 		}
 		catch(SQLException e)
 		{
-			e.printStackTrace();
+			System.out.println("Error de SQL" + e.getMessage());
+			throw new DataBaseException("Error de SQL");
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("Clase no encontrada" + e.getMessage());
+			throw new DataBaseException("Clase no encontrada");
 		}
+	}
+	
+	public int modificarRegistro(String querySQL) throws DataBaseException {
+		try {
+			stm = con.createStatement();
+			filasAfectadas = stm.executeUpdate(querySQL);
+		} catch (SQLException e) {
+			IOException ioe = new IOException();  
+			ioe.initCause(e);
+			log.fatal("Ocurrio un error fatal");
+			throw new DataBaseException("Error de SQL", ioe.getCause());
+		}
+		
 		this.cerrarObjetos();
 		return filasAfectadas;
 	}
-	
+
 	public void cerrarObjetos()
 	{
 		try
@@ -63,7 +75,7 @@ public class DataBaseHelper <T> {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<T> seleccionarRegistros(String query, Class clase) {
+	public List<T> seleccionarRegistros(String query, Class clase) throws DataBaseException{
 		ResultSet filas = null;
 		List<T> listaDeObjetos = new ArrayList<T>();
 		try {
@@ -95,8 +107,12 @@ public class DataBaseHelper <T> {
 				}
 				listaDeObjetos.add(object);
 			}
-		} catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-			e.printStackTrace();
+		} catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException |  InvocationTargetException | NoSuchMethodException  e) {
+			System.out.println("Clase: "+ e.getClass());
+			IOException ioe = new IOException();  
+			ioe.initCause(e);
+			log.fatal("Ocurrio un error fatal");
+			throw new DataBaseException("Error al leer registros", ioe.getCause());
 		}
 
 		return listaDeObjetos;

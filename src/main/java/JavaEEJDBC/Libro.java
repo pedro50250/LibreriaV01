@@ -80,7 +80,7 @@ public class Libro {
 	}*/
 
 	@SuppressWarnings("rawtypes")
-	public int insertar() {
+	public int insertar() throws DataBaseException{
 		String consultaSQL = "INSERT INTO libros(isbn_lib, tit_lib, cat_lib, pre_lib) VALUES";
 		consultaSQL += "('" + isbn_lib + "','" + tit_lib + "'," + cat_lib + "," + pre_lib + ")";
 		DataBaseHelper dbh = new DataBaseHelper();
@@ -90,7 +90,7 @@ public class Libro {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<Libro> consultarLibros() {
+	public static List<Libro> consultarLibros() throws DataBaseException{
 		String SQL = "SELECT * FROM libros";
 		DataBaseHelper dbh = new DataBaseHelper();
 		List<Libro> ListaDeLibros = dbh.seleccionarRegistros(SQL, Libro.class);
@@ -99,7 +99,7 @@ public class Libro {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Libro consultaLibroPorId(int id)
+	public Libro consultaLibroPorId(int id) throws DataBaseException
 	{
 		String SQL = "SELECT * FROM libros WHERE num_lib=" + id + "";
 		DataBaseHelper dbh = new DataBaseHelper();
@@ -109,7 +109,7 @@ public class Libro {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public int actualizarLibro(int id)
+	public int actualizarLibro(int id) throws DataBaseException
 	{
 		this.num_lib = id;
 		DataBaseHelper dbh = new DataBaseHelper();
@@ -119,7 +119,7 @@ public class Libro {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public void BorrarLibro(int id)
+	public void BorrarLibro(int id) throws DataBaseException
 	{
 		String consultaSQL = "DELETE FROM libros WHERE num_lib =" +id + ";";
 		DataBaseHelper dbh = new DataBaseHelper();
@@ -128,7 +128,7 @@ public class Libro {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<Libro> buscarPorCategoria(int Cat)
+	public static List<Libro> buscarPorCategoria(int Cat) throws DataBaseException
 	{
 		String SQL = "SELECT * FROM libros WHERE cat_lib ="+ Cat;
 		DataBaseHelper dbh = new DataBaseHelper();

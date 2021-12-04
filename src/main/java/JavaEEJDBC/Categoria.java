@@ -42,7 +42,7 @@ public class Categoria {
 	}*/
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<Categoria> getCategorias()
+	public static List<Categoria> getCategorias() throws DataBaseException
 	{
 		String consultaSQL = "SELECT * FROM categoria";
 		DataBaseHelper dbh = new DataBaseHelper();
@@ -52,7 +52,7 @@ public class Categoria {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String getNombreCategoriaById(int idCat)
+	public String getNombreCategoriaById(int idCat) throws DataBaseException
 	{
 		String consultaSQL = "SELECT * FROM categoria WHERE id_cat="+idCat;
 		DataBaseHelper dbh = new DataBaseHelper();

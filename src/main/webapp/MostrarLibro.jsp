@@ -15,11 +15,12 @@
 <body>
 	<h1>Selecciona por Categoria: </h1>
 	<div>
-		<form action="MostrarLibro.jsp"  method="GET">
+		<form action="ControladorLibros.do"  method="GET">
 		<select name="categoria" class="form-select form-select-lg mb-3">
 			<option value="Seleccionar">Seleccionar</option>
 			<%
-					List<Categoria> listaCategoria = new  Categoria().getCategorias();
+					List<Categoria> listaCategoria = null;
+					listaCategoria = (List<Categoria>) request.getAttribute("listDeCategoria");
 					for(Categoria c: listaCategoria ) {%>
 						<option value="<%= c.getid_cat() %>"> <%= c.getnom_cat()%> </option>
 					<%}
@@ -46,13 +47,13 @@
 					List<Libro> libros = null;
 					if(request.getParameter("categoria") == null || request.getParameter("categoria").equals("Seleccionar"))
 					{
-						libros = new Libro().consultarLibros();
+						libros = (List<Libro>) request.getAttribute("listaDeLibros");
 					}
 					else
 					{
-						int c = Integer.parseInt(request.getParameter("categoria"));
-						libros = new Libro().buscarPorCategoria(c);
+						libros = (List<Libro>) request.getAttribute("listDeLibrosFiltro");
 					}
+					try{
 					for(Libro lib: libros){
 					%>
 				<tr>
@@ -66,7 +67,10 @@
 					</td>	
 					<td> <a href="BorrarLibro.jsp?id=<%=lib.getnum_lib() %>"><i class="fas fa-trash-alt"></i></a></td>
 				</tr>
-				<%} %>
+				<%} } catch(NullPointerException e)
+				{
+					  out.println("<br>La lista esta vacia</br>");	
+				}%>
 			</tbody>
 		</table>
 	</div>
