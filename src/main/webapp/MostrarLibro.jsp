@@ -4,9 +4,10 @@
 <%@ page import="java.sql.SQLException"%>
 <%@ page import="java.util.List"%>
 <%@ page import="JavaEEJDBC.*"%>
+<%@taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <html lang="es">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
   <script src="js/EditarLibro.js" ></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
@@ -16,17 +17,13 @@
 	<h1>Selecciona por Categoria: </h1>
 	<div>
 		<form action="ControladorLibros.do"  method="GET">
-		<select name="categoria" class="form-select form-select-lg mb-3">
-			<option value="Seleccionar">Seleccionar</option>
-			<%
-					List<Categoria> listaCategoria = null;
-					listaCategoria = (List<Categoria>) request.getAttribute("listDeCategoria");
-					for(Categoria c: listaCategoria ) {%>
-						<option value="<%= c.getid_cat() %>"> <%= c.getnom_cat()%> </option>
-					<%}
-			%>
-		</select>
-		<input type="submit" value="Filtrar"/>
+			<select name="categoria" class="form-select form-select-lg mb-3">
+				<option value="Seleccionar">Seleccionar</option>
+				<c:forEach var="c" items="${listDeCategoria}">
+					<option value="${c.getid_cat()}"> "${c.getnom_cat()}" </option>
+				</c:forEach>
+			</select>
+			<input type="submit" value="Filtrar"/>
 		</form>
 	</div>
 	<div>
@@ -43,34 +40,25 @@
 				</tr>
 			</thead>
 			<tbody>
-				<%
-					List<Libro> libros = null;
-					if(request.getParameter("categoria") == null || request.getParameter("categoria").equals("Seleccionar"))
-					{
-						libros = (List<Libro>) request.getAttribute("listaDeLibros");
-					}
-					else
-					{
-						libros = (List<Libro>) request.getAttribute("listDeLibrosFiltro");
-					}
-					try{
-					for(Libro lib: libros){
-					%>
-				<tr>
-					<th scope="row"><%=lib.getnum_lib() %></th>
-					<td><%=lib.getisbn_lib()%></td>
-					<td><%=lib.gettit_lib()%></td>
-					<td><%=new Categoria().getNombreCategoriaById(lib.getcat_lib()) %></td>
-					<td><%=lib.getpre_lib() %></td>
+				<c:forEach var="lib" items="${listaDeLibros}">
+					<tr>
+					<th scope="row">${lib.getnum_lib()}</th>
+					<td>${lib.getisbn_lib()}</td>
+					<td>${lib.gettit_lib()}</td>
 					<td>
-						<a href="FormularioEditarLibro.jsp?ID=<%=lib.getnum_lib() %>"><i class="fas fa-edit"></i></a>
+						<c:forEach var="c" items="${listDeCategoria}">
+							<c:if test="${lib.getcat_lib() == c.getid_cat()  }">
+								${c.getnom_cat()}
+							</c:if>
+						</c:forEach>
+					</td>
+					<td>${lib.getpre_lib()}</td>
+					<td>
+						<a href="FormularioEditarLibro.jsp?ID=${lib.getnum_lib()}"><i class="fas fa-edit"></i></a>
 					</td>	
-					<td> <a href="BorrarLibro.jsp?id=<%=lib.getnum_lib() %>"><i class="fas fa-trash-alt"></i></a></td>
+					<td> <a href="BorrarLibro.do?id=${lib.getnum_lib()}"><i class="fas fa-trash-alt"></i></a></td>
 				</tr>
-				<%} } catch(NullPointerException e)
-				{
-					  out.println("<br>La lista esta vacia</br>");	
-				}%>
+				</c:forEach>
 			</tbody>
 		</table>
 	</div>

@@ -15,7 +15,7 @@
 		Libro lib = new Libro().consultaLibroPorId(id);
 		%>
 		<h1>Editar Libro</h1>
-			<form name="form" action="EditarLibro.jsp" method="GET">
+			<form name="form" action="EditarLibro.do" method="GET">
 				<input type="hidden" name="Id" id="ISBN" value="<%=lib.getnum_lib()%>"></input><br></br> 
 				ISBN: <input type="text" name="ISBN" id="ISBN" value="<%=lib.getisbn_lib()%>"></input><br></br> 
 				Titulo:<input type="text" name="Titulo" id="Titulo" value="<%=lib.gettit_lib()%>"></input><br> </br> 
