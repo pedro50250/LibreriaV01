@@ -10,7 +10,7 @@
 	<body>
 		<div>
 			<h1>Formulario Alta Libro</h1>
-			<form action="Insertar.do" method="GET">
+			<form action="InsertarLibro.do" method="GET">
 				ISBN: <input type="text" name="ISBNLibro" id="ISBN"></input><br></br> 
 				Titulo:<input type="text" name="NomLibro" id="Titulo"></input><br> </br> 
 				Categoria: <input type="number" name="CatLibro" id="Categoria"></input><br></br> 
