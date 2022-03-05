@@ -7,7 +7,7 @@ public abstract class Action {
 
 	public abstract String ejecutar(HttpServletRequest request, HttpServletResponse response);
 	
-	@SuppressWarnings("null")
+	@SuppressWarnings({ "rawtypes" })
 	public static Action getAccion(String tipo)
 	{
 		Action action =  null;

@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
   <script src="js/EditarLibro.js" ></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-<title>Insert title here</title>
+<title>Lista Libros</title>
 </head>
 <body>
 	<h1>Selecciona por Categoria: </h1>
@@ -64,6 +64,6 @@
 	</div>
 	<br />
 	<a class="btn btn-primary" href="FormularioInsertarLibro.jsp" role="button">Inserta un Libro <i class="fas fa-book"></i></a>
-	
+	<a class="btn btn-primary" href="MostrarProveedor.do" role="button">Ir a lista proveedores <i class="fas fa-truck"></i></a>
 </body>
 </html>

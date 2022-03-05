@@ -89,13 +89,18 @@ public class DataBaseHelper <T> {
 				{
 					if(metodos[i].getName().startsWith("set"))
 					{
-						if(metodos[i].getName().substring(3).equals("num_lib") || metodos[i].getName().substring(3).equals("cat_lib") ||  metodos[i].getName().substring(3).equals("id_cat"))
+						if(metodos[i].getName().substring(3).equals("num_lib") || metodos[i].getName().substring(3).equals("cat_lib") ||  metodos[i].getName().substring(3).equals("id_cat")
+								|| metodos[i].getName().substring(3).equals("id_proveedor"))
 						{
 							metodos[i].invoke(object, filas.getInt(metodos[i].getName().substring(3)));
 						}
 						else if(metodos[i].getName().substring(3).equals("pre_lib"))
 						{
 							metodos[i].invoke(object, filas.getFloat(metodos[i].getName().substring(3)));
+						}
+						else if(metodos[i].getName().substring(3).equals("fecha_alta"))
+						{
+							metodos[i].invoke(object, filas.getTimestamp(metodos[i].getName().substring(3)));
 						}
 						else
 						{
@@ -139,6 +144,25 @@ public class DataBaseHelper <T> {
 		
 	}
 	
-	
+	public int actualizarRegistroProveedor(Proveedor prov)
+	{
+		String SQL = "UPDATE libros SET nombre_proveedor = ?, fecha_alta =?, rfc_proveedor=?, telefono_proveedor=? "
+				+ "WHERE id_proveedor=?";
+		int filas= -1;
+		try {
+			PreparedStatement ps = con.prepareStatement(SQL);
+			ps.setString(1, prov.getnombre_proveedor());
+			ps.setTimestamp(2, prov.getfecha_alta());
+			ps.setString(3, prov.getrfc_proveedor());
+			ps.setString(4, prov.gettelefono_proveedor());
+			ps.setInt(5, prov.getid_proveedor());
+			filas = ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return filas;
+		
+	}
 	
 }
