@@ -8,6 +8,7 @@ import JavaEEJDBC.Libro;
 
 public class EditarLibroAction extends Action{
 
+	@SuppressWarnings("unused")
 	@Override
 	public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
 		String StrISBN = request.getParameter("ISBN"); 
@@ -17,7 +18,7 @@ public class EditarLibroAction extends Action{
 		int id = Integer.parseInt(request.getParameter("Id"));
 		try {
 			int fil= new Libro(StrISBN, StrTitulo, Cat, Pre).actualizarLibro(id);
-			System.out.println("Filas modificadas: " + fil);
+			//System.out.println("Filas modificadas: " + fil);
 		} catch (DataBaseException e) {
 			e.printStackTrace();
 		}

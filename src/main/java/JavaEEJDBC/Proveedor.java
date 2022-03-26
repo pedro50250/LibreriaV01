@@ -3,8 +3,17 @@ package JavaEEJDBC;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="proveedor")
 public class Proveedor {
 
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id_proveedor;
 	String nombre_proveedor;
 	Timestamp fecha_alta;
@@ -15,11 +24,9 @@ public class Proveedor {
 		
 	}
 
-	public Proveedor(int id_proveedor, String nombre_proveedor, Timestamp fecha_alta, String rfc_proveedor,
+	public Proveedor(String nombre_proveedor, String rfc_proveedor,
 			String telefono_proveedor) {
-		this.id_proveedor = id_proveedor;
 		this.nombre_proveedor = nombre_proveedor;
-		this.fecha_alta = fecha_alta;
 		this.rfc_proveedor = rfc_proveedor;
 		this.telefono_proveedor = telefono_proveedor;
 	}
@@ -67,30 +74,34 @@ public class Proveedor {
 	@SuppressWarnings("rawtypes")
 	public int insertar() throws DataBaseException
 	{
-		String consultaSQL = "INSERT INTO proveedor(nombre_proveedor,fecha_alta,rfc_proveedor,telefono_proveedor) VALUES";
-		consultaSQL += "('" + nombre_proveedor + "','" + fecha_alta + "','" + rfc_proveedor + "','" + telefono_proveedor + "')";
+		//String consultaSQL = "INSERT INTO proveedor(nombre_proveedor,fecha_alta,rfc_proveedor,telefono_proveedor) VALUES";
+		//consultaSQL += "('" + nombre_proveedor + "','" + fecha_alta + "','" + rfc_proveedor + "','" + telefono_proveedor + "')";
 		DataBaseHelper dbh = new DataBaseHelper();
-		int filas = dbh.modificarRegistro(consultaSQL);
-		dbh.cerrarObjetos();
-		return filas;
+		//int filas = dbh.modificarRegistro(consultaSQL);
+		//dbh.cerrarObjetos();
+		dbh.modificarRegistro(this, "insertar");
+		return 0;
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static List<Proveedor> consultarProveedores() throws DataBaseException{
-		String SQL = "SELECT * FROM proveedor";
+		String SQL = "from Proveedor proveedor";
 		DataBaseHelper dbh = new DataBaseHelper();
-		List<Proveedor> ListaDeProveedores = dbh.seleccionarRegistros(SQL, Proveedor.class);
-		dbh.cerrarObjetos();
+		//List<Proveedor> ListaDeProveedores = dbh.seleccionarRegistros(SQL, Proveedor.class);
+		//dbh.cerrarObjetos();
+		List<Proveedor> ListaDeProveedores = dbh.leerRegistros(SQL);
 		return ListaDeProveedores;
 	}
 	
 	@SuppressWarnings("rawtypes")
 	public void BorrarProveedor(int id) throws DataBaseException
 	{
-		String consultaSQL = "DELETE FROM proveedor WHERE id_proveedor =" +id + ";";
+		//String consultaSQL = "DELETE FROM proveedor WHERE id_proveedor =" +id + ";";
+		this.setid_proveedor(id);
 		DataBaseHelper dbh = new DataBaseHelper();
-		int filas = dbh.modificarRegistro(consultaSQL);
-		System.out.println(filas);
+		//int filas = dbh.modificarRegistro(consultaSQL);
+		//System.out.println(filas);
+		dbh.modificarRegistro(this, "eliminar");
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -98,18 +109,20 @@ public class Proveedor {
 	{
 		this.id_proveedor = id;
 		DataBaseHelper dbh = new DataBaseHelper();
-		int filas = dbh.actualizarRegistroProveedor(this);
-		dbh.cerrarObjetos();
-		return filas;
+		//int filas = dbh.actualizarRegistroProveedor(this);
+		//dbh.cerrarObjetos();
+		dbh.modificarRegistro(this, "actualizar");
+		return 0;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Proveedor buscarPorId(int id) throws DataBaseException
 	{
-		String SQL = "SELECT * FROM proveedor WHERE id_proveedor ="+ id;
+		String SQL = "from Proveedor WHERE id_proveedor ="+ id;
 		DataBaseHelper dbh = new DataBaseHelper();
-		List<Proveedor> ListaDeProveedores = dbh.seleccionarRegistros(SQL, Proveedor.class);
-		dbh.cerrarObjetos();
+		//List<Proveedor> ListaDeProveedores = dbh.seleccionarRegistros(SQL, Proveedor.class);
+		//dbh.cerrarObjetos();
+		List<Proveedor> ListaDeProveedores = dbh.leerRegistros(SQL);
 		return ListaDeProveedores.get(0);
 	}
 

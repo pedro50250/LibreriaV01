@@ -1,38 +1,35 @@
 package JavaEEJDBC;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 
 public class DataBaseHelper <T> {
 
-	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+	/*private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 	private static final String URL = "jdbc:mysql://localhost/libreria";
 	private static final String USUARIO = "root";
-	private static final String CLAVE ="";
+	private static final String CLAVE ="";*/
 	private Logger log =  LogManager.getLogger("DataBaseHelper");
 	
-	Connection con = null;
-	Statement stm = null;
+	//Connection con = null;
+	//Statement stm = null;
 	int filasAfectadas = 0;
 	public DataBaseHelper() throws DataBaseException
 	{
-		try {
-			Class.forName(DRIVER);
-			con = DriverManager.getConnection(URL,USUARIO, CLAVE);
+		/*try {
+			//Class.forName(DRIVER);
+			//con = DriverManager.getConnection(URL,USUARIO, CLAVE);
 			log.setLevel(Level.DEBUG);
 		}
 		catch(SQLException e)
@@ -43,10 +40,11 @@ public class DataBaseHelper <T> {
 		} catch (ClassNotFoundException e) {
 			System.out.println("Clase no encontrada" + e.getMessage());
 			throw new DataBaseException("Clase no encontrada");
-		}
+		}*/
+		log.setLevel(Level.DEBUG);
 	}
 	
-	public int modificarRegistro(String querySQL) throws DataBaseException {
+	/*public int modificarRegistro(String querySQL) throws DataBaseException {
 		try {
 			stm = con.createStatement();
 			filasAfectadas = stm.executeUpdate(querySQL);
@@ -163,6 +161,69 @@ public class DataBaseHelper <T> {
 		}
 		return filas;
 		
+	}*/
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public List<T> leerRegistros( String query) throws DataBaseException
+	{
+		Session session = null;
+		List<T> listaDeObjetos = new ArrayList<T>();
+		try {
+			SessionFactory factoria = new Configuration().configure().buildSessionFactory();
+			session = factoria.openSession();
+			Query consulta = session.createQuery(query);
+			listaDeObjetos = consulta.list();
+		}
+		catch(HibernateException e)
+		{
+			System.out.println(e.getMessage());
+		}
+		finally {
+			if(session!=null) session.close();
+		}
+		return listaDeObjetos;
+	}
+	
+	public void modificarRegistro(Object objeto, String accion)
+	{
+		Session session = null;
+		Transaction transaction = null;
+		try {
+			SessionFactory factoria = new Configuration().configure().buildSessionFactory();
+			session = factoria.openSession();
+			transaction = session.beginTransaction();
+			if(accion=="insertar")
+			{
+				session.save(objeto);
+			}
+			else if(accion=="actualizar")
+			{
+				session.update(objeto);
+			}
+			else if(accion=="eliminar")
+			{
+				session.delete(objeto);
+			}
+			transaction.commit();
+		}
+		catch(HibernateException e)
+		{
+			System.out.println(e.getMessage());
+			try {
+				transaction.rollback();
+			}catch(IllegalStateException e1)
+			{
+				System.out.println("No se pudo realizar el rollback");
+			}
+		}
+		catch(SecurityException e)
+		{
+			e.printStackTrace();
+		}
+		finally {
+			if(session!=null) session.close();
+			if(transaction!=null) session.close();
+		}
 	}
 	
 }

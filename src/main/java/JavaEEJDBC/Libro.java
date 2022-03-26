@@ -2,8 +2,17 @@ package JavaEEJDBC;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="libros")
 public class Libro {
 
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int num_lib;
 	private String isbn_lib;
 	private String tit_lib;
@@ -61,50 +70,36 @@ public class Libro {
 		this.num_lib = num_lib;
 	}
 	
-	
-	
-	/*public ArrayList<Integer> buscarLascat_libs() {
-		String consultaSQL = "SELECT DISTINCT(cat_lib) FROM libros";
-		DataBaseHelper dbh = new DataBaseHelper();
-		ResultSet rs = dbh.seleccionarRegistros(consultaSQL);
-		ArrayList<Integer> listacat_libs = new ArrayList<Integer>();
-		try {
-			while(rs.next())
-			{
-				listacat_libs.add(rs.getInt("cat_lib"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return listacat_libs;
-	}*/
 
 	@SuppressWarnings("rawtypes")
 	public int insertar() throws DataBaseException{
-		String consultaSQL = "INSERT INTO libros(isbn_lib, tit_lib, cat_lib, pre_lib) VALUES";
-		consultaSQL += "('" + isbn_lib + "','" + tit_lib + "'," + cat_lib + "," + pre_lib + ")";
+		//String consultaSQL = "INSERT INTO libros(isbn_lib, tit_lib, cat_lib, pre_lib) VALUES";
+		//consultaSQL += "('" + isbn_lib + "','" + tit_lib + "'," + cat_lib + "," + pre_lib + ")";
 		DataBaseHelper dbh = new DataBaseHelper();
-		int filas = dbh.modificarRegistro(consultaSQL);
-		dbh.cerrarObjetos();
-		return filas;
+		//int filas = dbh.modificarRegistro(consultaSQL);
+		//dbh.cerrarObjetos();
+		dbh.modificarRegistro(this,"insertar");
+		return 0;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static List<Libro> consultarLibros() throws DataBaseException{
-		String SQL = "SELECT * FROM libros";
+		String SQL = "from Libro libros";
 		DataBaseHelper dbh = new DataBaseHelper();
-		List<Libro> ListaDeLibros = dbh.seleccionarRegistros(SQL, Libro.class);
-		dbh.cerrarObjetos();
+		//List<Libro> ListaDeLibros = dbh.seleccionarRegistros(SQL, Libro.class);
+		//dbh.cerrarObjetos();
+		List <Libro> ListaDeLibros = dbh.leerRegistros(SQL);
 		return ListaDeLibros;
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Libro consultaLibroPorId(int id) throws DataBaseException
 	{
-		String SQL = "SELECT * FROM libros WHERE num_lib=" + id + "";
+		String SQL = "from Libro WHERE num_lib=" + id + "";
 		DataBaseHelper dbh = new DataBaseHelper();
-		List<Libro> ListaDeLibros= dbh.seleccionarRegistros(SQL, Libro.class);
-		dbh.cerrarObjetos();
+		//List<Libro> ListaDeLibros= dbh.seleccionarRegistros(SQL, Libro.class);
+		//dbh.cerrarObjetos();
+		List<Libro> ListaDeLibros= dbh.leerRegistros(SQL);
 		return ListaDeLibros.get(0);
 	}
 	
@@ -113,27 +108,31 @@ public class Libro {
 	{
 		this.num_lib = id;
 		DataBaseHelper dbh = new DataBaseHelper();
-		int filas = dbh.actualizarRegistro(this);
-		dbh.cerrarObjetos();
-		return filas;
+		//int filas = dbh.actualizarRegistro(this);
+		//dbh.cerrarObjetos();
+		dbh.modificarRegistro(this,"actualizar");
+		return 0;
 	}
 	
 	@SuppressWarnings("rawtypes")
 	public void BorrarLibro(int id) throws DataBaseException
 	{
-		String consultaSQL = "DELETE FROM libros WHERE num_lib =" +id + ";";
+		//String consultaSQL = "DELETE FROM libros WHERE num_lib =" +id + ";";
+		this.num_lib = id;
 		DataBaseHelper dbh = new DataBaseHelper();
-		int filas = dbh.modificarRegistro(consultaSQL);
-		System.out.println(filas);
+		//int filas = dbh.modificarRegistro(consultaSQL);
+		//System.out.println(filas);
+		dbh.modificarRegistro(this, "eliminar");
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static List<Libro> buscarPorCategoria(int Cat) throws DataBaseException
 	{
-		String SQL = "SELECT * FROM libros WHERE cat_lib ="+ Cat;
+		String SQL = "from Libro WHERE cat_lib ="+ Cat;
 		DataBaseHelper dbh = new DataBaseHelper();
-		List<Libro> ListaDeLibros = dbh.seleccionarRegistros(SQL, Libro.class);
-		dbh.cerrarObjetos();
+		//List<Libro> ListaDeLibros = dbh.seleccionarRegistros(SQL, Libro.class);
+		//dbh.cerrarObjetos();
+		List<Libro> ListaDeLibros = dbh.leerRegistros(SQL);
 		return ListaDeLibros;
 	}
 	

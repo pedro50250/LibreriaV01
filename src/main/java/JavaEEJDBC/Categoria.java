@@ -2,8 +2,17 @@ package JavaEEJDBC;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="categoria")
 public class Categoria {
 
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_cat;
 	private String nom_cat;
 	
@@ -44,20 +53,22 @@ public class Categoria {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static List<Categoria> getCategorias() throws DataBaseException
 	{
-		String consultaSQL = "SELECT * FROM categoria";
+		String consultaSQL = "from Categoria categoria";
 		DataBaseHelper dbh = new DataBaseHelper();
-		List<Categoria> listaCategorias =  dbh.seleccionarRegistros(consultaSQL, Categoria.class);
-		dbh.cerrarObjetos();
+		//List<Categoria> listaCategorias =  dbh.seleccionarRegistros(consultaSQL, Categoria.class);
+		//dbh.cerrarObjetos();
+		List<Categoria> listaCategorias = dbh.leerRegistros(consultaSQL);
 		return listaCategorias;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String getNombreCategoriaById(int idCat) throws DataBaseException
 	{
-		String consultaSQL = "SELECT * FROM categoria WHERE id_cat="+idCat;
+		String consultaSQL = "from Categoria where id_cat="+idCat;
 		DataBaseHelper dbh = new DataBaseHelper();
-		List<Categoria> listaCategorias = dbh.seleccionarRegistros(consultaSQL, Categoria.class);
-		dbh.cerrarObjetos();
+		//List<Categoria> listaCategorias = dbh.seleccionarRegistros(consultaSQL, Categoria.class);
+		//dbh.cerrarObjetos();
+		List<Categoria> listaCategorias = dbh.leerRegistros(consultaSQL);
 		return listaCategorias.get(0).getnom_cat();
 	}
 	

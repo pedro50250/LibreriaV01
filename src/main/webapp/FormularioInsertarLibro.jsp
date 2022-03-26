@@ -4,7 +4,6 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 		<title>Formulario Alta Libro</title>
-		<script src="js/AltaLibro.js" ></script>
 		<link rel="stylesheet" type="text/css" href="CSS/AltaLibro.css" media="screen"/> 
 	</head>
 	<body>
