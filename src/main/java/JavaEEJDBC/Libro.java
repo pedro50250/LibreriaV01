@@ -73,22 +73,16 @@ public class Libro {
 
 	@SuppressWarnings("rawtypes")
 	public int insertar() throws DataBaseException{
-		//String consultaSQL = "INSERT INTO libros(isbn_lib, tit_lib, cat_lib, pre_lib) VALUES";
-		//consultaSQL += "('" + isbn_lib + "','" + tit_lib + "'," + cat_lib + "," + pre_lib + ")";
-		DataBaseHelper dbh = new DataBaseHelper();
-		//int filas = dbh.modificarRegistro(consultaSQL);
-		//dbh.cerrarObjetos();
-		dbh.modificarRegistro(this,"insertar");
+		HibernateHelper hh = new HibernateHelper();
+		hh.modificarRegistro(this,"insertar");
 		return 0;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static List<Libro> consultarLibros() throws DataBaseException{
 		String SQL = "from Libro libros";
-		DataBaseHelper dbh = new DataBaseHelper();
-		//List<Libro> ListaDeLibros = dbh.seleccionarRegistros(SQL, Libro.class);
-		//dbh.cerrarObjetos();
-		List <Libro> ListaDeLibros = dbh.leerRegistros(SQL);
+		HibernateHelper hh = new HibernateHelper();
+		List <Libro> ListaDeLibros = hh.leerRegistros(SQL);
 		return ListaDeLibros;
 	}
 	
@@ -96,10 +90,8 @@ public class Libro {
 	public Libro consultaLibroPorId(int id) throws DataBaseException
 	{
 		String SQL = "from Libro WHERE num_lib=" + id + "";
-		DataBaseHelper dbh = new DataBaseHelper();
-		//List<Libro> ListaDeLibros= dbh.seleccionarRegistros(SQL, Libro.class);
-		//dbh.cerrarObjetos();
-		List<Libro> ListaDeLibros= dbh.leerRegistros(SQL);
+		HibernateHelper hh = new HibernateHelper();
+		List<Libro> ListaDeLibros= hh.leerRegistros(SQL);
 		return ListaDeLibros.get(0);
 	}
 	
@@ -107,32 +99,25 @@ public class Libro {
 	public int actualizarLibro(int id) throws DataBaseException
 	{
 		this.num_lib = id;
-		DataBaseHelper dbh = new DataBaseHelper();
-		//int filas = dbh.actualizarRegistro(this);
-		//dbh.cerrarObjetos();
-		dbh.modificarRegistro(this,"actualizar");
+		HibernateHelper hh = new HibernateHelper();
+		hh.modificarRegistro(this,"actualizar");
 		return 0;
 	}
 	
 	@SuppressWarnings("rawtypes")
 	public void BorrarLibro(int id) throws DataBaseException
 	{
-		//String consultaSQL = "DELETE FROM libros WHERE num_lib =" +id + ";";
 		this.num_lib = id;
-		DataBaseHelper dbh = new DataBaseHelper();
-		//int filas = dbh.modificarRegistro(consultaSQL);
-		//System.out.println(filas);
-		dbh.modificarRegistro(this, "eliminar");
+		HibernateHelper hh = new HibernateHelper();
+		hh.modificarRegistro(this, "eliminar");
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static List<Libro> buscarPorCategoria(int Cat) throws DataBaseException
 	{
 		String SQL = "from Libro WHERE cat_lib ="+ Cat;
-		DataBaseHelper dbh = new DataBaseHelper();
-		//List<Libro> ListaDeLibros = dbh.seleccionarRegistros(SQL, Libro.class);
-		//dbh.cerrarObjetos();
-		List<Libro> ListaDeLibros = dbh.leerRegistros(SQL);
+		HibernateHelper hh = new HibernateHelper();
+		List<Libro> ListaDeLibros = hh.leerRegistros(SQL);
 		return ListaDeLibros;
 	}
 	

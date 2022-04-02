@@ -76,20 +76,20 @@ public class Proveedor {
 	{
 		//String consultaSQL = "INSERT INTO proveedor(nombre_proveedor,fecha_alta,rfc_proveedor,telefono_proveedor) VALUES";
 		//consultaSQL += "('" + nombre_proveedor + "','" + fecha_alta + "','" + rfc_proveedor + "','" + telefono_proveedor + "')";
-		DataBaseHelper dbh = new DataBaseHelper();
+		HibernateHelper hh = new HibernateHelper();
 		//int filas = dbh.modificarRegistro(consultaSQL);
 		//dbh.cerrarObjetos();
-		dbh.modificarRegistro(this, "insertar");
+		hh.modificarRegistro(this, "insertar");
 		return 0;
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static List<Proveedor> consultarProveedores() throws DataBaseException{
 		String SQL = "from Proveedor proveedor";
-		DataBaseHelper dbh = new DataBaseHelper();
+		HibernateHelper hh = new HibernateHelper();
 		//List<Proveedor> ListaDeProveedores = dbh.seleccionarRegistros(SQL, Proveedor.class);
 		//dbh.cerrarObjetos();
-		List<Proveedor> ListaDeProveedores = dbh.leerRegistros(SQL);
+		List<Proveedor> ListaDeProveedores = hh.leerRegistros(SQL);
 		return ListaDeProveedores;
 	}
 	
@@ -98,20 +98,20 @@ public class Proveedor {
 	{
 		//String consultaSQL = "DELETE FROM proveedor WHERE id_proveedor =" +id + ";";
 		this.setid_proveedor(id);
-		DataBaseHelper dbh = new DataBaseHelper();
+		HibernateHelper hh = new HibernateHelper();
 		//int filas = dbh.modificarRegistro(consultaSQL);
 		//System.out.println(filas);
-		dbh.modificarRegistro(this, "eliminar");
+		hh.modificarRegistro(this, "eliminar");
 	}
 	
 	@SuppressWarnings("rawtypes")
 	public int actualizarProveedor(int id) throws DataBaseException
 	{
 		this.id_proveedor = id;
-		DataBaseHelper dbh = new DataBaseHelper();
+		HibernateHelper hh = new HibernateHelper();
 		//int filas = dbh.actualizarRegistroProveedor(this);
 		//dbh.cerrarObjetos();
-		dbh.modificarRegistro(this, "actualizar");
+		hh.modificarRegistro(this, "actualizar");
 		return 0;
 	}
 	
@@ -119,10 +119,10 @@ public class Proveedor {
 	public Proveedor buscarPorId(int id) throws DataBaseException
 	{
 		String SQL = "from Proveedor WHERE id_proveedor ="+ id;
-		DataBaseHelper dbh = new DataBaseHelper();
+		HibernateHelper hh = new HibernateHelper();
 		//List<Proveedor> ListaDeProveedores = dbh.seleccionarRegistros(SQL, Proveedor.class);
 		//dbh.cerrarObjetos();
-		List<Proveedor> ListaDeProveedores = dbh.leerRegistros(SQL);
+		List<Proveedor> ListaDeProveedores = hh.leerRegistros(SQL);
 		return ListaDeProveedores.get(0);
 	}
 

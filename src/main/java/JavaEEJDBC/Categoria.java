@@ -54,10 +54,10 @@ public class Categoria {
 	public static List<Categoria> getCategorias() throws DataBaseException
 	{
 		String consultaSQL = "from Categoria categoria";
-		DataBaseHelper dbh = new DataBaseHelper();
+		HibernateHelper hh = new HibernateHelper();
 		//List<Categoria> listaCategorias =  dbh.seleccionarRegistros(consultaSQL, Categoria.class);
 		//dbh.cerrarObjetos();
-		List<Categoria> listaCategorias = dbh.leerRegistros(consultaSQL);
+		List<Categoria> listaCategorias = hh.leerRegistros(consultaSQL);
 		return listaCategorias;
 	}
 	
@@ -65,10 +65,10 @@ public class Categoria {
 	public String getNombreCategoriaById(int idCat) throws DataBaseException
 	{
 		String consultaSQL = "from Categoria where id_cat="+idCat;
-		DataBaseHelper dbh = new DataBaseHelper();
+		HibernateHelper hh = new HibernateHelper();
 		//List<Categoria> listaCategorias = dbh.seleccionarRegistros(consultaSQL, Categoria.class);
 		//dbh.cerrarObjetos();
-		List<Categoria> listaCategorias = dbh.leerRegistros(consultaSQL);
+		List<Categoria> listaCategorias = hh.leerRegistros(consultaSQL);
 		return listaCategorias.get(0).getnom_cat();
 	}
 	
