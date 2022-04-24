@@ -19,7 +19,7 @@
 				<input type="hidden" name="Id" id="ISBN" value="<%=lib.getnum_lib()%>"></input><br></br> 
 				ISBN: <input type="text" name="ISBN" id="ISBN" value="<%=lib.getisbn_lib()%>"></input><br></br> 
 				Titulo:<input type="text" name="Titulo" id="Titulo" value="<%=lib.gettit_lib()%>"></input><br> </br> 
-				Categoria: <input type="number" name="Categoria" id="Categoria" value="<%=lib.getcat_lib()%>"></input><br></br> 
+				Categoria: <input type="number" name="Categoria" id="Categoria" value="<%=lib.getcat_lib()%>" pattern="\d*" title="Numbers only, please."></input><br></br> 
 				Precio: <input type="text" name="Precio" id="Precio" value="<%=lib.getpre_lib()%>"></input><br></br> 
 				<input type="submit" value="Editar"/>
 			</form>

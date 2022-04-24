@@ -25,12 +25,14 @@ public class CRUDHIbernate <T>{
 	
 	public static void main(String[] args) {
 		CRUDHIbernate hib = new CRUDHIbernate();
-		try {
-			hib.leerRegistros("from Libro libros");
+		/*try {
+			//hib.leerRegistros("from Libro libros");
+			hib
 		} catch (DataBaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
+		hib.leerLibros();
 	}
 	
 	public void leerLibros()
@@ -43,7 +45,8 @@ public class CRUDHIbernate <T>{
 			List<Libro> listaLibros = consulta.list();
 			for(Libro L:listaLibros)
 			{
-				System.out.println(L.getnum_lib()+"\t\t"+L.getisbn_lib()+"\t\t"+L.gettit_lib()+"\t\t"+L.getcat_lib()+"\t\t"+L.getpre_lib());
+				//System.out.println(L.getnum_lib()+"\t\t"+L.getisbn_lib()+"\t\t"+L.gettit_lib()+"\t\t"+L.getcat_lib()+"\t\t"+L.getpre_lib());
+				System.out.println(L.getnum_lib()+"\t\t"+L.gettit_lib()+"\t\t"+L.getCategoria().getnom_cat()+"\t\t"+L.getpre_lib());
 			}
 			
 		}

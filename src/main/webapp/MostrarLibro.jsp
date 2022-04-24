@@ -45,13 +45,7 @@
 					<th scope="row">${lib.getnum_lib()}</th>
 					<td>${lib.getisbn_lib()}</td>
 					<td>${lib.gettit_lib()}</td>
-					<td>
-						<c:forEach var="c" items="${listDeCategoria}">
-							<c:if test="${lib.getcat_lib() == c.getid_cat()  }">
-								${c.getnom_cat()}
-							</c:if>
-						</c:forEach>
-					</td>
+					<td>${lib.getCategoria().getnom_cat()}</td>
 					<td>${lib.getpre_lib()}</td>
 					<td>
 						<a href="FormularioEditarLibro.jsp?ID=${lib.getnum_lib()}"><i class="fas fa-edit"></i></a>

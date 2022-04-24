@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -15,6 +17,10 @@ public class Categoria {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_cat;
 	private String nom_cat;
+	@OneToMany
+	@JoinColumn(name ="id_cat")
+	private List<Libro> listaDeLibros;
+	
 	
 	public Categoria() {
 		
@@ -41,15 +47,14 @@ public class Categoria {
 		this.nom_cat = nom_cat;
 	}
 	
-	/*@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<Integer> buscarLasCategorias() {
-		String consultaSQL = "SELECT DISTINCT(cat_lib) FROM libros";
-		DataBaseHelper dbh = new DataBaseHelper();
-		List<Integer> listaCategorias= dbh.seleccionarRegistros(consultaSQL, Categoria.class);
-		dbh.cerrarObjetos();
-		return listaCategorias;
-	}*/
-	
+	public List<Libro> getListaDeLibros() {
+		return listaDeLibros;
+	}
+
+	public void setListaDeLibros(List<Libro> listaDeLibros) {
+		this.listaDeLibros = listaDeLibros;
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static List<Categoria> getCategorias() throws DataBaseException
 	{

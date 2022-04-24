@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,6 +19,9 @@ public class Libro {
 	private String isbn_lib;
 	private String tit_lib;
 	private int cat_lib;
+	@ManyToOne
+	@JoinColumn(name = "cat_lib", referencedColumnName ="id_cat", insertable=false, updatable=false, nullable=false )
+	private Categoria categoria;
 	private float pre_lib;
 
 	public Libro() {
@@ -70,6 +75,15 @@ public class Libro {
 		this.num_lib = num_lib;
 	}
 	
+	
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
 
 	@SuppressWarnings("rawtypes")
 	public int insertar() throws DataBaseException{
