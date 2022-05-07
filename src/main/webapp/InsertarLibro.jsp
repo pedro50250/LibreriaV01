@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="JavaEEJDBC.*"%>
+<%@ page import="beans.*"%>
 <%
 	String StrISBN = request.getParameter("ISBN"); 
 	String StrTitulo = request.getParameter("Titulo"); 

@@ -1,4 +1,4 @@
-package JavaEEJDBC;
+package beans;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import JavaEEJDBC.DataBaseException;
+import JavaEEJDBC.HibernateHelper;
 
 @Entity
 @Table(name="proveedor")

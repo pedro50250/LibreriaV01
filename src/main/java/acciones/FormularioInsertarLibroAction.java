@@ -5,8 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import JavaEEJDBC.Categoria;
 import JavaEEJDBC.DataBaseException;
+import beans.Categoria;
 
 public class FormularioInsertarLibroAction extends Action{
 

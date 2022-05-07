@@ -15,7 +15,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import JavaEEJDBC.DataBaseException;
-import JavaEEJDBC.Libro;
+import beans.Libro;
 
 public class CRUDHIbernate <T>{
 

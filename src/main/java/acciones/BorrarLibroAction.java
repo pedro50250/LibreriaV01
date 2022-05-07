@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import JavaEEJDBC.DataBaseException;
-import JavaEEJDBC.Libro;
+import beans.Libro;
 
 public class BorrarLibroAction extends Action{
 

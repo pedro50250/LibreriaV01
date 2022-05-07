@@ -15,6 +15,9 @@ import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import beans.Libro;
+import beans.Proveedor;
+
 
 public class DataBaseHelper <T> {
 

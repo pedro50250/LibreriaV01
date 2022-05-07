@@ -1,14 +1,20 @@
-package JavaEEJDBC;
+package beans;
 
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.PersistenceException;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
+
+import JavaEEJDBC.DataBaseException;
+import JavaEEJDBC.JPAHelper;
 
 @Entity
 @Table(name="categoria")
@@ -55,25 +61,49 @@ public class Categoria {
 		this.listaDeLibros = listaDeLibros;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
 	public static List<Categoria> getCategorias() throws DataBaseException
 	{
-		String consultaSQL = "from Categoria categoria";
-		HibernateHelper hh = new HibernateHelper();
-		//List<Categoria> listaCategorias =  dbh.seleccionarRegistros(consultaSQL, Categoria.class);
-		//dbh.cerrarObjetos();
-		List<Categoria> listaCategorias = hh.leerRegistros(consultaSQL);
+		List<Categoria> listaCategorias = null;
+		EntityManager entityManager = JPAHelper.getEntityManager();
+		try{
+			TypedQuery<Categoria> consulta = entityManager.createQuery("SELECT C FROM Categoria C", Categoria.class);
+			listaCategorias = consulta.getResultList();
+		}
+		catch(PersistenceException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(entityManager != null)
+			{
+				entityManager.close();
+			}
+		}
 		return listaCategorias;
 	}
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+
 	public String getNombreCategoriaById(int idCat) throws DataBaseException
 	{
 		String consultaSQL = "from Categoria where id_cat="+idCat;
-		HibernateHelper hh = new HibernateHelper();
-		//List<Categoria> listaCategorias = dbh.seleccionarRegistros(consultaSQL, Categoria.class);
-		//dbh.cerrarObjetos();
-		List<Categoria> listaCategorias = hh.leerRegistros(consultaSQL);
+		List<Categoria> listaCategorias = null;
+		EntityManager entityManager = JPAHelper.getEntityManager();
+		try{
+			TypedQuery<Categoria> consulta = entityManager.createQuery(consultaSQL, Categoria.class);
+			listaCategorias = consulta.getResultList();
+		}
+		catch(PersistenceException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(entityManager != null)
+			{
+				entityManager.close();
+			}
+		}
 		return listaCategorias.get(0).getnom_cat();
 	}
 	

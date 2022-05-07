@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import JavaEEJDBC.DataBaseException;
-import JavaEEJDBC.Proveedor;
+import beans.Proveedor;
 
 public class EditarProveedorAction extends Action{
 

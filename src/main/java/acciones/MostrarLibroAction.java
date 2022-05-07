@@ -5,9 +5,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import JavaEEJDBC.Categoria;
 import JavaEEJDBC.DataBaseException;
-import JavaEEJDBC.Libro;
+import beans.Categoria;
+import beans.Libro;
 
 public class MostrarLibroAction extends Action {
 

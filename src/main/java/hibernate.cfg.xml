@@ -8,8 +8,8 @@
 	<property name="connection.pool_size">5</property>
 	<property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
 	<property name="show_sql">true</property>
-	<mapping class="JavaEEJDBC.Libro"/>
-	<mapping class="JavaEEJDBC.Categoria"/>
-	<mapping class="JavaEEJDBC.Proveedor"/>
+	<mapping class="beans.Libro"/>
+	<mapping class="beans.Categoria"/>
+	<mapping class="beans.Proveedor"/>
 	</session-factory>
 </hibernate-configuration>
