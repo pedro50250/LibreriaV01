@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="JavaEEJDBC.*"%>
 <%@ page import="beans.*"%>
+<%@ page import="DAO.*"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,7 +14,8 @@
 	<div>
 		<%
 		int id = Integer.parseInt(request.getParameter("ID"));
-		Proveedor prov = new Proveedor().buscarPorId(id);
+		ProveedorDAO provDao = new ProveedorDAO();
+		Proveedor prov = provDao.buscarPorId(id);
 		%>
 		<h1>Editar Proveedor</h1>
 			<form name="form" action="EditarProveedor.do" method="GET">

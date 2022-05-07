@@ -1,16 +1,11 @@
 package beans;
 
 import java.sql.Timestamp;
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import JavaEEJDBC.DataBaseException;
-import JavaEEJDBC.HibernateHelper;
 
 @Entity
 @Table(name="proveedor")
@@ -74,59 +69,5 @@ public class Proveedor {
 		this.telefono_proveedor = telefono_proveedor;
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public int insertar() throws DataBaseException
-	{
-		//String consultaSQL = "INSERT INTO proveedor(nombre_proveedor,fecha_alta,rfc_proveedor,telefono_proveedor) VALUES";
-		//consultaSQL += "('" + nombre_proveedor + "','" + fecha_alta + "','" + rfc_proveedor + "','" + telefono_proveedor + "')";
-		HibernateHelper hh = new HibernateHelper();
-		//int filas = dbh.modificarRegistro(consultaSQL);
-		//dbh.cerrarObjetos();
-		hh.modificarRegistro(this, "insertar");
-		return 0;
-	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static List<Proveedor> consultarProveedores() throws DataBaseException{
-		String SQL = "from Proveedor proveedor";
-		HibernateHelper hh = new HibernateHelper();
-		//List<Proveedor> ListaDeProveedores = dbh.seleccionarRegistros(SQL, Proveedor.class);
-		//dbh.cerrarObjetos();
-		List<Proveedor> ListaDeProveedores = hh.leerRegistros(SQL);
-		return ListaDeProveedores;
-	}
-	
-	@SuppressWarnings("rawtypes")
-	public void BorrarProveedor(int id) throws DataBaseException
-	{
-		//String consultaSQL = "DELETE FROM proveedor WHERE id_proveedor =" +id + ";";
-		this.setid_proveedor(id);
-		HibernateHelper hh = new HibernateHelper();
-		//int filas = dbh.modificarRegistro(consultaSQL);
-		//System.out.println(filas);
-		hh.modificarRegistro(this, "eliminar");
-	}
-	
-	@SuppressWarnings("rawtypes")
-	public int actualizarProveedor(int id) throws DataBaseException
-	{
-		this.id_proveedor = id;
-		HibernateHelper hh = new HibernateHelper();
-		//int filas = dbh.actualizarRegistroProveedor(this);
-		//dbh.cerrarObjetos();
-		hh.modificarRegistro(this, "actualizar");
-		return 0;
-	}
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Proveedor buscarPorId(int id) throws DataBaseException
-	{
-		String SQL = "from Proveedor WHERE id_proveedor ="+ id;
-		HibernateHelper hh = new HibernateHelper();
-		//List<Proveedor> ListaDeProveedores = dbh.seleccionarRegistros(SQL, Proveedor.class);
-		//dbh.cerrarObjetos();
-		List<Proveedor> ListaDeProveedores = hh.leerRegistros(SQL);
-		return ListaDeProveedores.get(0);
-	}
 
 }

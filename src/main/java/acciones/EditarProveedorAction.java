@@ -1,14 +1,9 @@
 package acciones;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import DAO.ProveedorDAO;
 import JavaEEJDBC.DataBaseException;
 import beans.Proveedor;
 
@@ -25,18 +20,20 @@ public class EditarProveedorAction extends Action{
 		int id =  Integer.parseInt(request.getParameter("Id"));
 		String RFC = request.getParameter("RFC");
 		String Telefono = request.getParameter("Telefono");
-		String fecha = request.getParameter("Fecha");
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-		Date date;
+		//String fecha = request.getParameter("Fecha");
+		//DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+		//Date date;
+		ProveedorDAO provDao = new ProveedorDAO();
+		
 		try {
-			date = dateFormat.parse(fecha);
-			long time = date.getTime();
-			Timestamp fec = new Timestamp(time);
-			Proveedor prov = new Proveedor(Nombre,RFC,Telefono);
+			Proveedor prov = provDao.buscarPorId(id);
 			prov.setid_proveedor(id);
-			prov.setfecha_alta(fec);
-			prov.actualizarProveedor(id);
-		} catch (ParseException | DataBaseException e) {
+			//prov.setfecha_alta(fec);
+			prov.setnombre_proveedor(Nombre);
+			prov.setrfc_proveedor(RFC);
+			prov.settelefono_proveedor(Telefono);
+			provDao.actualizarProveedor(prov);
+		} catch (DataBaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
