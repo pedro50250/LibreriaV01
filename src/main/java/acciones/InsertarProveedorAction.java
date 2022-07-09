@@ -4,9 +4,10 @@ import java.sql.Timestamp;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import DAO.ProveedorDAO;
 import JavaEEJDBC.DataBaseException;
 import beans.Proveedor;
+import servicios.ServicioProveedor;
+import servicios.ServicioProveedorImpl;
 
 public class InsertarProveedorAction extends Action{
 
@@ -22,9 +23,9 @@ public class InsertarProveedorAction extends Action{
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		Proveedor prov = new Proveedor(Nombre,RFC,Telefono);
 		prov.setfecha_alta(timestamp);
-		ProveedorDAO provDao = new ProveedorDAO();
+		ServicioProveedor servicioProveedor = (ServicioProveedor) getBean("ServicioProveedores", request);
 		try {
-			provDao.insertar(prov);
+			servicioProveedor.insertar(prov);
 		} catch (DataBaseException e) {
 			e.printStackTrace();
 		}

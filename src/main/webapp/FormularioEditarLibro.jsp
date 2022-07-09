@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="JavaEEJDBC.*"%>
 <%@ page import="beans.*"%>
-<%@ page import="DAO.*"%>
+<%@ page import="servicios.*"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,9 +13,10 @@
 <body>
 	<div>
 		<%
-		int id = Integer.parseInt(request.getParameter("ID"));
-		LibroDAO libDao = new LibroDAO();
-		Libro lib = libDao.consultaLibroPorId(id);
+
+				int id = Integer.parseInt(request.getParameter("ID"));
+				ServicioLibros servicioLibros = new ServicioLibrosImpl();
+				Libro lib = servicioLibros.buscarPorClave(id);
 		%>
 		<h1>Editar Libro</h1>
 			<form name="form" action="EditarLibro.do" method="GET">

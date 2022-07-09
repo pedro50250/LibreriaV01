@@ -1,0 +1,25 @@
+<?xml version ="1.0" encoding="UTF-8"?>
+<beans xmlns ="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+	<bean id="LibroJPA" class="DAO.LibroDAOJPAImpl"></bean>
+	<bean id="CategoriaJPA" class="DAO.CategoriaDAOJPAImpl"></bean>
+	<bean id="ProveedorJPA" class="DAO.ProveedorDAOJPAImpl"></bean>
+	
+	<bean id="LibroHibernate" class="DAO.LibroDAOHIBERNATEImpl"></bean>
+	<bean id="CategoriaHibernate" class="DAO.CategoriaDAOHIBERNATEImpl"></bean>
+	<bean id="ProveedorHibernate" class="DAO.ProveedorDAOHIBERNATEImpl"></bean>
+	
+	<bean id="ServicioLibros" class="servicios.ServicioLibrosImpl">
+		<property name="LibroDAO" ref="LibroJPA"></property>
+	</bean>
+	<bean id="ServicioCategorias" class="servicios.ServicioCategoriasImpl">
+		<property name="CategoriaDAO" ref="CategoriaJPA"></property>
+	</bean>
+	<bean id="ServicioProveedores" class="servicios.ServicioLibrosImpl">
+		<property name="ProveedorDAO" ref="ProveedorJPA"></property>
+	</bean>
+	
+</beans>

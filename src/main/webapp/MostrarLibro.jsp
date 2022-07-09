@@ -59,5 +59,6 @@
 	<br />
 	<a class="btn btn-primary" href="FormularioInsertarLibro.jsp" role="button">Inserta un Libro <i class="fas fa-book"></i></a>
 	<a class="btn btn-primary" href="MostrarProveedor.do" role="button">Ir a lista proveedores <i class="fas fa-truck"></i></a>
+	<a class="btn btn-primary" href="MostrarCategoria.do" role="button">Ir a lista categorias <i class="fas fa-tags"></i></a>
 </body>
 </html>

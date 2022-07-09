@@ -1,72 +1,68 @@
 package DAO;
 
+import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
-
-import JavaEEJDBC.DataBaseException;
 import JavaEEJDBC.JPAHelper;
-import beans.Proveedor;
 
-public class ProveedorDAO {
+public abstract class GenericDAOJPAImpl<T, Id extends Serializable> implements GenericDAO<T, Id> {
 
-	public int insertar(Proveedor proveedor) throws DataBaseException
+
+	private Class<T> claseDePersistencia;
+
+	@SuppressWarnings("unchecked")
+	public GenericDAOJPAImpl()
 	{
-		EntityManager entityManager = JPAHelper.getEntityManager();
-		EntityTransaction entityTransaction = entityManager.getTransaction();
-        
-		try{
-			entityTransaction.begin();
-			entityManager.persist(proveedor);
-			entityTransaction.commit();
-		}
-		catch(PersistenceException e)
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			if(entityManager != null)
-			{
-				entityManager.close();
-			}
-		}
-		return 0;
-	}
-
-	public  List<Proveedor> consultarProveedores() throws DataBaseException{
-		List<Proveedor> ListaDeProveedores = null;
-		EntityManager entityManager = JPAHelper.getEntityManager();
-		try{
-			TypedQuery<Proveedor> consulta = entityManager.createQuery("SELECT P FROM Proveedor P", Proveedor.class);
-			ListaDeProveedores = consulta.getResultList();
-		}
-		catch(PersistenceException e)
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			if(entityManager != null)
-			{
-				entityManager.close();
-			}
-		}
-		return ListaDeProveedores;
+		this.claseDePersistencia = (Class <T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 	
-
-	public void BorrarProveedor(Proveedor prov) throws DataBaseException
+	public T buscarPorClave(Id id)
+	{
+		EntityManager entityManager = JPAHelper.getEntityManager();
+		T objeto = null;
+		try {
+			objeto = (T) entityManager.find(claseDePersistencia, id);
+		}
+		catch(PersistenceException e)
+		{
+			e.printStackTrace();
+		}finally {
+		
+			entityManager.close();
+		}
+		return objeto;
+	}
+	
+	public List<T> buscarTodos(){
+		EntityManager entityManager = JPAHelper.getEntityManager();
+		List<T> listaDeObjetos = null;
+		try {
+			TypedQuery<T> consulta = entityManager.createQuery("Select o FROM "+ claseDePersistencia.getSimpleName() + " o", claseDePersistencia);
+			listaDeObjetos = consulta.getResultList();
+		}
+		catch(PersistenceException e)
+		{
+			e.printStackTrace();
+		}finally {
+		
+			entityManager.close();
+		}
+		return listaDeObjetos;
+	}
+	
+	public void borrar(T objeto)
 	{
 		EntityManager entityManager = JPAHelper.getEntityManager();
 		EntityTransaction entityTransaction = entityManager.getTransaction();
         
 		try{
 			entityTransaction.begin();
-			entityManager.remove(entityManager.merge(prov));      
+			entityManager.remove(entityManager.merge(objeto));      
 			entityTransaction.commit();
 		}
 		catch(PersistenceException e)
@@ -82,20 +78,20 @@ public class ProveedorDAO {
 		}
 	}
 	
-
-	public int actualizarProveedor(Proveedor prov) throws DataBaseException
+	public void insertar(T objeto)
 	{
 		EntityManager entityManager = JPAHelper.getEntityManager();
 		EntityTransaction entityTransaction = entityManager.getTransaction();
         
 		try{
 			entityTransaction.begin();
-			entityManager.merge(prov);
+			entityManager.persist(objeto);
 			entityTransaction.commit();
 		}
 		catch(PersistenceException e)
 		{
 			e.printStackTrace();
+			entityTransaction.rollback();
 		}
 		finally
 		{
@@ -104,21 +100,21 @@ public class ProveedorDAO {
 				entityManager.close();
 			}
 		}
-		return 0;
 	}
 	
-	public Proveedor buscarPorId(int id) throws DataBaseException
+	public void guardarCambios(T objeto)
 	{
-		String SQL = "from Proveedor WHERE id_proveedor ="+ id;
-		List<Proveedor> ListaDeProveedores = null;
 		EntityManager entityManager = JPAHelper.getEntityManager();
+		EntityTransaction entityTransaction = entityManager.getTransaction();
 		try{
-			TypedQuery<Proveedor> consulta = entityManager.createQuery(SQL, Proveedor.class);
-			ListaDeProveedores = consulta.getResultList();
+			entityTransaction.begin();
+			entityManager.merge(objeto);
+			entityTransaction.commit();
 		}
 		catch(PersistenceException e)
 		{
 			e.printStackTrace();
+			entityTransaction.rollback();
 		}
 		finally
 		{
@@ -127,6 +123,5 @@ public class ProveedorDAO {
 				entityManager.close();
 			}
 		}
-		return ListaDeProveedores.get(0);
 	}
 }

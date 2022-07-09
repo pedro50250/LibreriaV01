@@ -1,28 +1,23 @@
 package acciones;
 
-import java.util.List;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import DAO.CategoriaDAO;
-import DAO.LibroDAO;
 import JavaEEJDBC.DataBaseException;
-import beans.Categoria;
-import beans.Libro;
+import servicios.ServicioCategorias;
+import servicios.ServicioLibros;
 
 public class MostrarLibroFiltroAction extends Action {
 
 	@Override
 	public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
-		List<Libro> listDeLibrosFiltro = null;
-		LibroDAO libDao = new LibroDAO();
-		CategoriaDAO catDao = new CategoriaDAO();
+
+		ServicioLibros servicioLibros = (ServicioLibros) getBean("ServicioLibros", request);
+		ServicioCategorias servicioCategorias = (ServicioCategorias) getBean("ServicioCategorias", request);
 		try {
-			listDeLibrosFiltro = libDao.buscarPorCategoria(Integer.parseInt(request.getParameter("categoria")));
-			List<Categoria> listaCategoria = catDao.getCategorias();
-			request.setAttribute("listDeCategoria", listaCategoria);
-			request.setAttribute("listaDeLibros", listDeLibrosFiltro);
+			request.setAttribute("listDeCategoria", servicioCategorias.buscarTodos());
+			request.setAttribute("listaDeLibros", servicioLibros.buscarPorCategoria(Integer.parseInt(request.getParameter("categoria"))));
 		} catch (NumberFormatException | DataBaseException e) {
 			e.printStackTrace();
 		}

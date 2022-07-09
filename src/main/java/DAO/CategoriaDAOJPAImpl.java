@@ -10,30 +10,9 @@ import JavaEEJDBC.DataBaseException;
 import JavaEEJDBC.JPAHelper;
 import beans.Categoria;
 
-public class CategoriaDAO {
+public class CategoriaDAOJPAImpl extends GenericDAOJPAImpl<Categoria, Integer> implements CategoriaDAO {
 	
-	public  List<Categoria> getCategorias() throws DataBaseException
-	{
-		List<Categoria> listaCategorias = null;
-		EntityManager entityManager = JPAHelper.getEntityManager();
-		try{
-			TypedQuery<Categoria> consulta = entityManager.createQuery("SELECT C FROM Categoria C", Categoria.class);
-			listaCategorias = consulta.getResultList();
-		}
-		catch(PersistenceException e)
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			if(entityManager != null)
-			{
-				entityManager.close();
-			}
-		}
-		return listaCategorias;
-	}
-
+	
 	public String getNombreCategoriaById(int idCat) throws DataBaseException
 	{
 		String consultaSQL = "from Categoria where id_cat="+idCat;

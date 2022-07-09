@@ -1,28 +1,30 @@
 package acciones;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import DAO.CategoriaDAO;
 import JavaEEJDBC.DataBaseException;
 import beans.Categoria;
 import servicios.ServicioCategorias;
+import servicios.ServicioCategoriasImpl;
 
-public class FormularioInsertarLibroAction extends Action{
 
+public class BorrarCategoriaAction extends Action{
 
 	@Override
 	public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
-		List<Categoria> listaDeCategorias = null;
 		ServicioCategorias servicioCategorias = (ServicioCategorias) getBean("ServicioCategorias", request);
+		int id = Integer.parseInt(request.getParameter("id"));
+		Categoria cat;
 		try {
-			listaDeCategorias = servicioCategorias.buscarTodos();
+			cat = servicioCategorias.buscarPorClave(id);
+			servicioCategorias.borrar(cat);
 		} catch (DataBaseException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		request.setAttribute("listaCategorias", listaDeCategorias);
-		return "FormularioInsertarLibro.jsp";
+		return "MostrarCategoria.do";
 	}
 
 }

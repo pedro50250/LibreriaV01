@@ -1,4 +1,4 @@
-package PaquetePruebas;
+package paquetePruebas;
 
 import java.util.List;
 

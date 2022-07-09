@@ -3,10 +3,9 @@ package acciones;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import DAO.ProveedorDAO;
 import JavaEEJDBC.DataBaseException;
 import beans.Proveedor;
-
+import servicios.ServicioProveedor;
 public class EditarProveedorAction extends Action{
 
 	public EditarProveedorAction() {
@@ -15,24 +14,23 @@ public class EditarProveedorAction extends Action{
 
 	@Override
 	public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
-		
+		ServicioProveedor servicioProveedor = (ServicioProveedor) getBean("ServicioProveedores", request);
 		String Nombre = request.getParameter("Nombre");
 		int id =  Integer.parseInt(request.getParameter("Id"));
 		String RFC = request.getParameter("RFC");
 		String Telefono = request.getParameter("Telefono");
-		//String fecha = request.getParameter("Fecha");
-		//DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-		//Date date;
-		ProveedorDAO provDao = new ProveedorDAO();
+
+
 		
+		Proveedor prov;
 		try {
-			Proveedor prov = provDao.buscarPorId(id);
+			prov = servicioProveedor.buscarPorClave(id);
 			prov.setid_proveedor(id);
 			//prov.setfecha_alta(fec);
 			prov.setnombre_proveedor(Nombre);
 			prov.setrfc_proveedor(RFC);
 			prov.settelefono_proveedor(Telefono);
-			provDao.actualizarProveedor(prov);
+			servicioProveedor.guardarCambios(prov);
 		} catch (DataBaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

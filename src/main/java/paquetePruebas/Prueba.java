@@ -1,4 +1,4 @@
-package PaquetePruebas;
+package paquetePruebas;
 
 public class Prueba {
 

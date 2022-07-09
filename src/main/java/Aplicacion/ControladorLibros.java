@@ -29,7 +29,7 @@ public class ControladorLibros extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+		
 		RequestDispatcher despachador = null;
 		Action action = null;
 		String url = request.getServletPath();
@@ -47,11 +47,8 @@ public class ControladorLibros extends HttpServlet {
 		{
 			action = Action.getAccion(url.substring(1, url.length()-3));
 		}
-		if(action != null)
-		{
-			despachador = request.getRequestDispatcher(action.ejecutar(request, response));
-			despachador.forward (request, response);
-		}
+		despachador = request.getRequestDispatcher(action.ejecutar(request, response));
+		despachador.forward (request, response);
 	}
 
 

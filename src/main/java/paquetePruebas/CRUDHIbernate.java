@@ -1,4 +1,4 @@
-package PaquetePruebas;
+package paquetePruebas;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

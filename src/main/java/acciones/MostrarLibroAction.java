@@ -5,28 +5,31 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import DAO.CategoriaDAO;
-import DAO.LibroDAO;
 import JavaEEJDBC.DataBaseException;
 import beans.Categoria;
 import beans.Libro;
+import servicios.ServicioCategorias;
+import servicios.ServicioLibros;
+
 
 public class MostrarLibroAction extends Action {
 
-	@SuppressWarnings("static-access")
+	
 	@Override
 	public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
+		ServicioLibros servicioLibros = (ServicioLibros) getBean("ServicioLibros", request);
+		ServicioCategorias servicioCategorias = (ServicioCategorias) getBean("ServicioCategorias", request);
+		List<Libro> listDeLibros = null;
+		List<Categoria> listaCategoria = null;
 		try {
-			
-			LibroDAO libDao = new LibroDAO();
-			CategoriaDAO catDao = new CategoriaDAO();
-			List<Libro> listDeLibros = libDao.consultarLibros();
-			List<Categoria> listaCategoria = catDao.getCategorias();
-			request.setAttribute("listaDeLibros", listDeLibros);
-			request.setAttribute("listDeCategoria", listaCategoria);
+			listDeLibros = servicioLibros.buscarTodos();
+			listaCategoria = servicioCategorias.buscarTodos();
 		} catch (DataBaseException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		request.setAttribute("listaDeLibros", listDeLibros);
+		request.setAttribute("listDeCategoria", listaCategoria);
 		return "MostrarLibro.jsp";
 	}
 

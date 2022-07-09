@@ -9,20 +9,19 @@ import JavaEEJDBC.DataBaseException;
 import beans.Categoria;
 import servicios.ServicioCategorias;
 
-public class FormularioInsertarLibroAction extends Action{
-
+public class MostrarCategoriaAction extends Action{
 
 	@Override
 	public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
-		List<Categoria> listaDeCategorias = null;
 		ServicioCategorias servicioCategorias = (ServicioCategorias) getBean("ServicioCategorias", request);
+		List<Categoria> listaCategorias = null;
 		try {
-			listaDeCategorias = servicioCategorias.buscarTodos();
+			listaCategorias = servicioCategorias.buscarTodos();
 		} catch (DataBaseException e) {
 			e.printStackTrace();
 		}
-		request.setAttribute("listaCategorias", listaDeCategorias);
-		return "FormularioInsertarLibro.jsp";
+		request.setAttribute("listaCategorias", listaCategorias);
+		return "MostrarCategoria.jsp";
 	}
 
 }
